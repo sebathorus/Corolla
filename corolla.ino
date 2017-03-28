@@ -18,7 +18,6 @@ int pot1Pin = A2;//used to change petals position
 int pot2Pin = A1;//used to change light intensity
 int pot3Pin = A0;//used to change color of RGB Leds
 int feedbackpotPin = A3;//used to determine petals position
-//int ledPin = 13;      //select the pin for the LED
 int pot1RawValue = 0;  //variables to store the values coming from the potentiometers
 int pot2RawValue = 0;
 int pot3RawValue = 0;
@@ -29,8 +28,7 @@ int feedbackpotValue = 0;
 int stepper_turn = 0;
 
 void setup() {
-  // declare the ledPin as an OUTPUT:
-  pinMode(ledPin, OUTPUT);
+  pinMode(myledPin, OUTPUT);
   pinMode(pot1Pin, INPUT);
   pinMode(pot2Pin, INPUT);
   pinMode(pot3Pin, INPUT);
