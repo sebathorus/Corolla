@@ -91,7 +91,7 @@ void loop() {
           stepper_turn = - oneOutputTurn;
           Serial.println("Close");
         }
-      if ((pot1RawValue < 300) && (feedbackpotValue < 680))//if the value read from the feedback potentiometer, is below this value (690 in this case), stepper is stopped to not damage the mechanics and/or motor
+      if ((pot1RawValue < 300) && (feedbackpotValue < 690))//if the value read from the feedback potentiometer, is below this value (690 in this case), stepper is stopped to not damage the mechanics and/or motor
         {
           stepper_turn = 0;
           Serial.println("Close stopped");
@@ -102,7 +102,7 @@ void loop() {
           stepper_turn = oneOutputTurn;
           Serial.println("Open");
         }
-      if ((pot1RawValue > 600) && (feedbackpotValue > 750))//if the value read from the feedback potentiometer, is above this value (750 in this case), stepper is stopped to not damage the mechanics and/or motor
+      if ((pot1RawValue > 600) && (feedbackpotValue > 780))//if the value read from the feedback potentiometer, is above this value (750 in this case), stepper is stopped to not damage the mechanics and/or motor
         {
           stepper_turn = 0;
           Serial.println("Open stopped");
