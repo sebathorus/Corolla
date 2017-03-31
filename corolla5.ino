@@ -10,13 +10,13 @@
 
 rgb_lcd lcd;
 String lcdString;
-Stepper motor_stepper(oneMotorTurn, 8, 10, 9, 11);// define stepper 
+Stepper motor_stepper(oneMotorTurn, 8, 10, 9, 11);// define stepper control pins
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(36, myledPin, NEO_RGB + NEO_KHZ800); //define RGB LEDs strip
 
-int petalPos;
+//int petalPos;
 int brightness;// light intensity
-int maxbrightness = 42;//maximum brightness allowed to met condition maxbrightness * maxRatio <=255
-int maxRatio;//biggest color ratio
+int maxbrightness = 42;//maximum brightness allowed to met condition maxbrightness * maxRatio <=255. I put 42 as start value to match the start values for red, green and ratios.
+int maxRatio;//biggest color ratio - used to calculate maxbrightness
 int colorTemp;//color intensity used to change light color
 int red_ratio = 6;
 int green_ratio = 5;
@@ -91,8 +91,9 @@ void loop() {
   Serial.println(pot1RawValue3);
   Serial.print("Selected mode = ");
   Serial.println(selectedMode);
-    
-  if ((switch1val1 == 0)&&(switch1val2 == 0)&&(switch1val3 == 1))//start switch1 position1
+
+   //each switch position corespond to a combination of one, two or three pins, so is required to check all three pins at once
+   if ((switch1val1 == 0)&&(switch1val2 == 0)&&(switch1val3 == 1))//start switch1 position1 - change petals position, brightness and light temperature
     {
       pot1RawValue1 = analogRead(pot1Pin);// read the value from the potentiometers
       pot2RawValue1 = analogRead(pot2Pin);
@@ -119,16 +120,14 @@ void loop() {
           }
         if (selectedMode == 1)
           {
-            petalPos = map(pot1RawValue1, 0, 1023, 0, 250);
             brightness = map(pot2RawValue1, 0, 1023, 0, maxbrightness);
             colorTemp = map(pot3RawValue1, 0, 1023, 0, 15);
-            Serial.print("Petal position = ");
-            Serial.println(petalPos);
+            
             Serial.print("brightness = ");
             Serial.println(brightness);
             Serial.print("colorTemp = ");
             Serial.println(colorTemp);
-          //}
+          
             if (pot1RawValue1 < 300)//if the value read from the first potentiometer, pot1, is below this value, petals are closing
               {
                 stepper_turn = - halfOutputTurn;
@@ -165,10 +164,10 @@ void loop() {
             blue_led = (brightness * blue_ratio) + colorTemp;
             colorWipe(strip.Color(green_led, red_led, blue_led), 30);
         }
-     delay(300);
+     delay(300);//this delay is needed for LCD display. Without delay the display is very dim
     }//end switch1 position1
 
-  if ((switch1val1 == 0)&&(switch1val2 == 1)&&(switch1val3 == 1))//start switch1 position 2
+  if ((switch1val1 == 0)&&(switch1val2 == 1)&&(switch1val3 == 1))//start switch1 position 2 - change LEDs colors
     {
       pot1RawValue2 = analogRead(pot1Pin);// read the value from the potentiometers
       pot2RawValue2 = analogRead(pot2Pin);
@@ -202,66 +201,64 @@ void loop() {
           Serial.println(pot2Value);
           Serial.print("Pot3 = ");
           Serial.println(pot3Value);*/
-          red_led = ledPot1Value;
-          green_led = ledPot2Value;
-          blue_led = ledPot3Value;
+            red_led = ledPot1Value;
+            green_led = ledPot2Value;
+            blue_led = ledPot3Value;
     
-          //lcd.clear();
-          //lcd.setCursor(5,0);//coordinates are (column, row) - 0,0 is upper left
-          //lcd.write("Mode 2");
-          lcdString = "R" + String(red_led) + " G " + String(green_led) + " B " + String(blue_led);
-          lcd.setCursor(0,1);
-          lcd.print(lcdString);
+            lcdString = "R" + String(red_led) + " G " + String(green_led) + " B " + String(blue_led);
+            lcd.setCursor(0,1);
+            lcd.print(lcdString);
           
-          colorWipe(strip.Color(green_led, red_led, blue_led), 30);
-    
-          if (ledPot1Value > ledPot2Value)
-              {
-                if (ledPot2Value > ledPot3Value)
-                          {
-                            red_ratio = ledPot1Value / ledPot3Value;
-                            green_ratio = ledPot2Value / ledPot3Value;
-                            blue_ratio = 1;
-                          }
-                if (ledPot2Value < ledPot3Value)
-                          {
-                            red_ratio = ledPot1Value / ledPot2Value;
-                            green_ratio = 1;
-                            blue_ratio = ledPot3Value / ledPot2Value;
-                            
-                          }
-                if (ledPot1Value < ledPot3Value)
-                    {
-                      red_ratio = ledPot1Value / ledPot2Value;
-                      green_ratio = 1;
-                      blue_ratio = ledPot3Value / ledPot2Value;
-                    }
-              }
-              
-            if (ledPot2Value > ledPot1Value)
-              {
-                if (ledPot1Value > ledPot3Value)
-                    {
-                      red_ratio = ledPot1Value / ledPot3Value;
-                      green_ratio = ledPot2Value / ledPot3Value;
-                      blue_ratio = 1;
-                    }
-                if (ledPot1Value < ledPot3Value)
-                    {
-                      red_ratio = 1;
-                      green_ratio = ledPot2Value / ledPot1Value;
-                      blue_ratio = ledPot3Value / ledPot1Value;
-                    }
-                if (ledPot2Value < ledPot3Value)
-                    {
-                      red_ratio = 1;
-                      green_ratio = ledPot2Value / ledPot1Value;
-                      blue_ratio = ledPot3Value / ledPot1Value;
-                    }
-              }
+            colorWipe(strip.Color(green_led, red_led, blue_led), 30);
+            
+          // start calculate the colors ratios
+             if (ledPot1Value > ledPot2Value)
+                  {
+                    if (ledPot2Value > ledPot3Value)
+                              {
+                                red_ratio = ledPot1Value / ledPot3Value;
+                                green_ratio = ledPot2Value / ledPot3Value;
+                                blue_ratio = 1;
+                              }
+                    if (ledPot2Value < ledPot3Value)
+                              {
+                                red_ratio = ledPot1Value / ledPot2Value;
+                                green_ratio = 1;
+                                blue_ratio = ledPot3Value / ledPot2Value;
+                                
+                              }
+                    if (ledPot1Value < ledPot3Value)
+                        {
+                          red_ratio = ledPot1Value / ledPot2Value;
+                          green_ratio = 1;
+                          blue_ratio = ledPot3Value / ledPot2Value;
+                        }
+                  }
+              if (ledPot2Value > ledPot1Value)
+                  {
+                    if (ledPot1Value > ledPot3Value)
+                        {
+                          red_ratio = ledPot1Value / ledPot3Value;
+                          green_ratio = ledPot2Value / ledPot3Value;
+                          blue_ratio = 1;
+                        }
+                    if (ledPot1Value < ledPot3Value)
+                        {
+                          red_ratio = 1;
+                          green_ratio = ledPot2Value / ledPot1Value;
+                          blue_ratio = ledPot3Value / ledPot1Value;
+                        }
+                    if (ledPot2Value < ledPot3Value)
+                        {
+                          red_ratio = 1;
+                          green_ratio = ledPot2Value / ledPot1Value;
+                          blue_ratio = ledPot3Value / ledPot1Value;
+                        }
+                  }
+             // end calculate the colors ratios
           maxRatio = max(red_ratio, green_ratio);
-          maxRatio = max(maxRatio, blue_ratio);
-          maxbrightness = 255/maxRatio;
+          maxRatio = max(maxRatio, blue_ratio);//calculate the biggest ratio
+          maxbrightness = 255/maxRatio;//calculate the maximum brightness
           /*Serial.print("Red_ratio = ");
           Serial.println(red_ratio);
           Serial.print("green_ratio = ");
@@ -276,7 +273,7 @@ void loop() {
       delay(300);
     }//end switch1 position2
 
-  if ((switch1val1 == 0)&&(switch1val2 == 1)&&(switch1val3 == 0))//start switch1 position 3
+  if ((switch1val1 == 0)&&(switch1val2 == 1)&&(switch1val3 == 0))//start switch1 position 3 - change LCD display background color
     {
       pot1RawValue3 = analogRead(pot1Pin);// read the value from the potentiometers
       pot2RawValue3 = analogRead(pot2Pin);
