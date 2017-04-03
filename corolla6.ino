@@ -41,9 +41,10 @@ int switch1val2 = 0;
 int switch1val3 = 0;
 int selectedMode = 1;
 
-int pot1RawValue1, pot1RawValue2, pot1RawValue3;  //variables to store the values coming from the potentiometers
-int pot2RawValue1, pot2RawValue2, pot2RawValue3;
-int pot3RawValue1, pot3RawValue2, pot3RawValue3;
+int pot1RawValue1, pot1RawValue2, pot1RawValue3, pot1RawValue5;  //variables to store the values coming from the potentiometers
+int pot2RawValue1, pot2RawValue2, pot2RawValue3, pot2RawValue5;
+int pot3RawValue1, pot3RawValue2, pot3RawValue3, pot3RawValue5;
+int patternSelector, patternVar1, patternVar2;
 int ledPot1Value = 0;//variables to store the values coming from the potentiometers mapped on different ranges
 int ledPot2Value = 0;
 int ledPot3Value = 0;
@@ -347,7 +348,34 @@ void loop() {
       pot1RawValue5 = analogRead(pot1Pin);// read the value from the potentiometers
       pot2RawValue5 = analogRead(pot2Pin);
       pot3RawValue5 = analogRead(pot3Pin);
-      delay(500);
+
+      patternSelector = map(pot1RawValue5, 0, 1023, 1, 5);
+      if (patternSelector == 1)
+          {
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
+            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+          }
+      if (patternSelector == 2)
+          {
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
+            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+          }
+      if (patternSelector == 3)
+          {
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
+            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+          }
+      if (patternSelector == 4)
+          {
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
+            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+          }
+      if (patternSelector == 5)
+          {
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
+            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+          }
+      delay(300);
     }//end switch1 position 5
     
 }//end loop
