@@ -24,6 +24,7 @@ int blue_ratio = 1;
 int red_led=1;// value for RED of RGB LED
 int green_led=1;// value for GREEN of RGB LED
 int blue_led=1;// value for BLUE of RGB LED
+int myPixels[36] = {};
 int red_lcd=110;// value for RED of RGB LED - I choose these default value for a pale orange backlight color
 int green_lcd=90;// value for GREEN of RGB LED
 int blue_lcd=10;// value for BLUE of RGB LED
@@ -372,17 +373,50 @@ void loop() {
             blue_led = (patternVar1 * blue_ratio) + colorTemp;
             
             progressive(strip.Color(red_led, green_led, blue_led), patternVar2);
-            //progressive(strip.Color(0, 0, 0), patternVar2+1);
           }
-      if (patternSelector == 2)
+      if (patternSelector == 2)//random pixels
           {
-            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
-            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, maxbrightness);
+            patternVar2 =  pot3RawValue5;
+            
+            red_led = (patternVar1 * red_ratio) - colorTemp;
+            green_led = (patternVar1 * green_ratio) - colorTemp;
+            blue_led = (patternVar1 * blue_ratio) + colorTemp;
+
+            int randomPixel = random(36);
+            if (myPixels[randomPixel] == 0)
+                {
+                  strip.setPixelColor(randomPixel, strip.Color(red_led, green_led, blue_led));
+                  myPixels[randomPixel] = 1;
+                }
+            randomPixel = random(36);
+            if (myPixels[randomPixel] == 1)
+                {
+                  strip.setPixelColor(randomPixel, strip.Color(0, 0, 0));
+                  myPixels[randomPixel] = 0;
+                }
+            strip.show();
+            delay(patternVar2);
           }
-      if (patternSelector == 3)
+      if (patternSelector == 3)//random pixels, random colors
           {
-            patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
-            patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
+            patternVar1 = map(pot2RawValue5, 0, 1023, 0, maxbrightness);
+            patternVar2 =  pot3RawValue5;
+            
+            int rand_red_ratio = random(6);
+            int rand_green_ratio = random(6);
+            int rand_blue_ratio = random(6);
+            
+            red_led = (patternVar1 * rand_red_ratio);
+            green_led = (patternVar1 * rand_green_ratio);
+            blue_led = (patternVar1 * rand_blue_ratio);
+
+            for (int x = 0; x < 6; x++)
+                {
+                  progressive(strip.Color(red_led, green_led, blue_led), x);
+                  delay(patternVar2);
+                }
+            delay(patternVar2);
           }
       if (patternSelector == 4)
           {
