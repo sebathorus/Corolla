@@ -94,13 +94,16 @@ void progressive(uint32_t c, uint8_t ledrow)
       strip.setPixelColor(x+30, c);
       strip.show();
       }
-      strip.setPixelColor(ledrow+1, strip.Color(0, 0, 0));
-      strip.setPixelColor(ledrow+7, strip.Color(0, 0, 0));
-      strip.setPixelColor(ledrow+13, strip.Color(0, 0, 0));
-      strip.setPixelColor(ledrow+19, strip.Color(0, 0, 0));
-      strip.setPixelColor(ledrow+25, strip.Color(0, 0, 0));
-      strip.setPixelColor(ledrow+31, strip.Color(0, 0, 0));
-      strip.show();
+      if (ledrow <= 4)
+          {
+            strip.setPixelColor(ledrow+1, strip.Color(0, 0, 0));
+            strip.setPixelColor(ledrow+7, strip.Color(0, 0, 0));
+            strip.setPixelColor(ledrow+13, strip.Color(0, 0, 0));
+            strip.setPixelColor(ledrow+19, strip.Color(0, 0, 0));
+            strip.setPixelColor(ledrow+25, strip.Color(0, 0, 0));
+            strip.setPixelColor(ledrow+31, strip.Color(0, 0, 0));
+            strip.show();
+          }
   }
 
 void loop() {
