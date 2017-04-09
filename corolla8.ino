@@ -57,6 +57,10 @@ int stepper_turn = 0;
 
 void setup() {
   pinMode(myledPin, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(8, OUTPUT);
   pinMode(pot1Pin, INPUT);
   pinMode(pot2Pin, INPUT);
   pinMode(pot3Pin, INPUT);
@@ -124,10 +128,10 @@ void loop() {
       feedbackpotValue = analogRead(feedbackpotPin);
       Serial.print("pot1RawValue1 = ");
       Serial.println(pot1RawValue1);
-      Serial.print("pot1RawValue2 = ");
-      Serial.println(pot1RawValue2);
-      Serial.print("pot1RawValue3 = ");
-      Serial.println(pot1RawValue3);
+      Serial.print("pot2RawValue1 = ");
+      Serial.println(pot2RawValue1);
+      Serial.print("pot3RawValue1 = ");
+      Serial.println(pot3RawValue1);
       Serial.print("Feedbackpot = ");
       Serial.println(feedbackpotValue);
       lcd.clear();
