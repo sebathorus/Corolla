@@ -372,6 +372,8 @@ void loop() {
       Serial.println(patternSelector);
       if (patternSelector == 1)
           {
+            lcd.setCursor(0,1);
+            lcd.print("Progressive");
             patternVar1 = map(pot2RawValue5, 0, 1023, 0, maxbrightness);
             patternVar2 =  map(pot3RawValue5, 0, 1023, 0, 5);
             
@@ -383,6 +385,8 @@ void loop() {
           }
       if (patternSelector == 2)//random pixels
           {
+            lcd.setCursor(0,1);
+            lcd.print("Radom pixels");
             patternVar1 = map(pot2RawValue5, 0, 1023, 0, maxbrightness);
             patternVar2 =  pot3RawValue5;
             
@@ -407,6 +411,8 @@ void loop() {
           }
       if (patternSelector == 3)//random pixels, random colors
           {
+            lcd.setCursor(0,1);
+            lcd.print("Pattern 3");
             patternVar1 = map(pot2RawValue5, 0, 1023, 0, maxbrightness);
             patternVar2 =  pot3RawValue5;
             
@@ -427,11 +433,15 @@ void loop() {
           }
       if (patternSelector == 4)
           {
+            lcd.setCursor(0,1);
+            lcd.print("Pattern 4");
             patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
             patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
           }
       if (patternSelector == 5)
           {
+            lcd.setCursor(0,1);
+            lcd.print("Pattern 5");
             patternVar1 = map(pot2RawValue5, 0, 1023, 0, 252);
             patternVar2 =  map(pot2RawValue5, 0, 1023, 0, 5);
           }
